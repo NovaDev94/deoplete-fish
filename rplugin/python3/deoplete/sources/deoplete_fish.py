@@ -28,8 +28,11 @@ class Source(Base):
             return []
 
         try:
-            output = subprocess.check_output(
-                ['fish', globs[0], context['input']], timeout=0.5)
+            process = subprocess.run(
+                ['fish', globs[0], context['input']],
+                timeout=0.5, capture_output=True, check=True
+            )
+            output = process.stdout
         except subprocess.SubprocessError:
             return []
 
